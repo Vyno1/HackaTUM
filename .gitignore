@@ -2,3 +2,5 @@
 build
 .intellijPlatform
 .gradle
+
+/src/main/resources/scripts/OpenAI_key.txt
