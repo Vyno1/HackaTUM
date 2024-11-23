@@ -45,8 +45,7 @@ class CheckBoxAction : AnAction() {
             selectedOptionsStringArr.add("--${key}=\"${value}\"")
         }
 
-        val pyfilepath =
-            "/Users/maxi/code/repos/TestBrains/src/main/resources/scripts/command_line_parser.py"
+        val pyfilepath = System.getenv("PY_FILE_PATH")
         val retStr = PythonHandler.call(pyfilepath, selectedOptionsStringArr)
         val (message, icon) =
             if (retStr.isEmpty()) "Success!" to Messages.getInformationIcon()
