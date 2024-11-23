@@ -55,7 +55,10 @@ def communicate(key: str, file_path_py: str, comment: str, module_class: str, fi
         function = file.read()
 
     module = os.path.basename(file_path_py).split(".")[0]
-    content = f"{function}\n{module}\n{module_class}"
+    if module_class != "":
+        content = f"{function}\n{module}\nClass:{module_class}"
+    else:
+        content = f"{function}\n{module}"
 
     message = client.beta.threads.messages.create(
         thread_id=thread.id,
