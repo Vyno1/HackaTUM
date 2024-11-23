@@ -6,13 +6,12 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Chat GPT Parser")
     parser.add_argument("--file_path", required=True, help="Path of input file")
     parser.add_argument("--function_path", required=True, help="The function to write the tests for")
-    parser.add_argument("--edge_cases", action="store_true", help="Flag set if edge case tests desired")
-    parser.add_argument("--security", action="store_true", help="Flag set if security tests desired")
-    parser.add_argument("--exception", action="store_true", help="Flag set if exception tests desired")
-    parser.add_argument("--general_functionality", action="store_true",
+    parser.add_argument("--EDGE_CASES", action="store_true", help="Flag set if edge case tests desired")
+    parser.add_argument("--SECURITY", action="store_true", help="Flag set if security tests desired")
+    parser.add_argument("--EXCEPTION", action="store_true", help="Flag set if exception tests desired")
+    parser.add_argument("--FUNCTIONALITY", action="store_true",
                         help="Flag set if general functionality tests desired")
-    parser.add_argument("--other", action="store_true", help="Flag set if other tests desired")
-    parser.add_argument("--comment", default="", help="Optional comment if user wants other tests")
+    parser.add_argument("--ADDITIONAL_PROMPTS", default="", help="Optional commentS if user wants other tests")
     parser.add_argument("--module", default="", help="What class/module we are in")
 
     args = parser.parse_args()
@@ -24,11 +23,11 @@ def parse_args():
     comment = args.comment
     module = args.module
 
-    params["edge_cases"] = args.edge_cases
-    params["exception"] = args.exception
-    params["security"] = args.security
-    params["genral_functionality"] = args.general_functionality
-    params["other"] = args.other
+    params["edge_cases"] = args.EDGE_CASES
+    params["exception"] = args.EXCEPTION
+    params["security"] = args.SECURITY
+    params["functionality"] = args.FUNCTIONALITY
+    params["other"] = args.ADDITIONAL_PROMPTS
 
     return file_path, function_path, params, module, comment
 
