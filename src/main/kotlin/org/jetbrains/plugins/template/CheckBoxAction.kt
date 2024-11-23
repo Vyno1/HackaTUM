@@ -20,7 +20,6 @@ class CheckBoxAction : AnAction() {
             displayError()
             return
         }
-        println(result)
 
         val dialog = MultiCheckboxDialog()
         if (!dialog.showAndGet()) {
@@ -34,6 +33,12 @@ class CheckBoxAction : AnAction() {
         val additionalPrompt = dialog.getAdditionalOptions()
         if (additionalPrompt.isNotEmpty()) {
             selectedOptionsStringArr.plus("--${Options.ADDITIONAL_PROMPTS.name} \"${additionalPrompt}\"")
+        }
+
+        val functionName = result["function"]
+        if (functionName == null || !File(functionName).exists()) {
+            displayError("Absolute path to function file not resolvable.")
+            return
         }
 
         for ((key, value) in result) {
@@ -76,8 +81,8 @@ class CheckBoxAction : AnAction() {
         return results
     }
 
-    private fun displayError() {
-        Messages.showMessageDialog("No function selected", "Error", Messages.getErrorIcon())
+    private fun displayError(msg: String = "No function selected") {
+        Messages.showMessageDialog(msg, "Error", Messages.getErrorIcon())
     }
 
 
