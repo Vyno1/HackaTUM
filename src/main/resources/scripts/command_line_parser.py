@@ -13,7 +13,7 @@ def parse_args():
                         help="Flag set if general functionality tests desired")
     parser.add_argument("--other", action="store_true", help="Flag set if other tests desired")
     parser.add_argument("--comment", default="", help="Optional comment if user wants other tests")
-    parser.add_argument("--module", help="What class/module we are in")
+    parser.add_argument("--module", default="", help="What class/module we are in")
 
     args = parser.parse_args()
 
