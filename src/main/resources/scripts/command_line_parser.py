@@ -20,7 +20,7 @@ def parse_args():
 
     file_path = args.file_path
     function_path = args.function_path
-    comment = args.comment
+    comment = args.ADDITIONAL_PROMPTS
     module = args.module
 
     params["edge_cases"] = args.EDGE_CASES
