@@ -2,6 +2,7 @@ from pathlib import Path
 
 out_file = Path(__file__).parent.parent / "out" / "out"
 
+
 test_out = \
 """import os
 
@@ -11,6 +12,8 @@ def abc() -> int
     return a + b
 """
 
-with open(out_file, "w") as f:
-    f.write(test_out)
+if __name__ == "__main__":
+    with open(out_file, "w") as f:
+        f.write(test_out)
 
+    print("ello")

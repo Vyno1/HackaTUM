@@ -33,11 +33,13 @@ class CheckBoxAction : AnAction() {
         if (additionalPrompt.isNotEmpty()) {
             selectedOptionsStringArr.plus("--${Options.ADDITIONAL_PROMPTS.name} \"${additionalPrompt}\"")
         }
+
         // TODO: Add helper function that infers source file path, class and function
         // Then, add to Args string list
         // If file is module (has no class), don't add --class
-        val scriptPath = MyBundle.message("script.filepath")
-        val retStr = PythonHandler.call(scriptPath, selectedOptionsStringArr)
+
+        val pyfilepath = "/Users/maxi/code/repos/TestBrains/src/main/resources/python/generate_tests.py"
+        val retStr = PythonHandler.call(pyfilepath, selectedOptionsStringArr)
         val (message, icon) =
             if (retStr.isEmpty()) "Success!" to Messages.getInformationIcon()
             else "Error: $retStr" to Messages.getErrorIcon()
@@ -67,4 +69,5 @@ class CheckBoxAction : AnAction() {
         }
         return ""
     }
+
 }
