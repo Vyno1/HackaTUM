@@ -35,8 +35,8 @@ class CheckBoxAction : AnAction() {
             selectedOptionsStringArr.plus("--${Options.ADDITIONAL_PROMPTS.name} \"${additionalPrompt}\"")
         }
 
-        val functionName = result["function"]
-        if (functionName == null || !File(functionName).exists()) {
+        val functionFilePath = result["function"]
+        if (functionFilePath == null || !File(functionFilePath).exists()) {
             displayError("Absolute path to function file not resolvable.")
             return
         }
