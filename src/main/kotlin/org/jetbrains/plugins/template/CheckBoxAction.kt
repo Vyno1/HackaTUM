@@ -28,11 +28,11 @@ class CheckBoxAction : AnAction() {
         }
 
         val selectedOptions = dialog.getSelectedOptions()
-        val selectedOptionsStringArr: MutableList<String> = selectedOptions.map { "--${it.name}" }.toMutableList()
+        var selectedOptionsStringArr: MutableList<String> = selectedOptions.map { "--${it.name}" }.toMutableList()
 
         val additionalPrompt = dialog.getAdditionalOptions()
         if (additionalPrompt.isNotEmpty()) {
-            selectedOptionsStringArr.add("--${Options.ADDITIONAL_PROMPTS.name} \"${additionalPrompt}\"")
+            selectedOptionsStringArr.add("--${Options.ADDITIONAL_PROMPTS.name}=\"${additionalPrompt}\"")
         }
 
         val functionFilePath = result["function_path"]
@@ -42,11 +42,11 @@ class CheckBoxAction : AnAction() {
         }
 
         for ((key, value) in result) {
-            selectedOptionsStringArr.add("--${key} \"${value}\"")
+            selectedOptionsStringArr.add("--${key}=\"${value}\"")
         }
 
         val pyfilepath =
-            "/Users/murasaki/Documents/JetbrainsProjects/HackaTUM/src/main/resources/scripts/command_line_parser.py"
+            "/Users/maxi/code/repos/TestBrains/src/main/resources/scripts/command_line_parser.py"
         val retStr = PythonHandler.call(pyfilepath, selectedOptionsStringArr)
         val (message, icon) =
             if (retStr.isEmpty()) "Success!" to Messages.getInformationIcon()
@@ -86,11 +86,9 @@ class CheckBoxAction : AnAction() {
         Messages.showMessageDialog(msg, "Error", Messages.getErrorIcon())
     }
 
-
     private fun createFunctionFile(function: String): String {
         // Specify the directory where you want to create the file
         val directory = File(System.getProperty("user.dir"), "generated_functions")
-
         // Create the directory if it does not exist
         if (!directory.exists()) {
             try {

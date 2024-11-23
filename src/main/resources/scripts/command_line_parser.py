@@ -34,6 +34,9 @@ def parse_args():
 
 def main():
     file_path, function_path, params, module, comment = parse_args()
+    module = module.replace("\"", "")
+    file_path = file_path.replace("\"", "")
+    function_path = function_path.replace("\"", "")
 
     for key, value in params.items():
         if value:

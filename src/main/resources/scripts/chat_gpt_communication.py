@@ -17,27 +17,32 @@ def communicate(key: str, file_path_py: str, comment: str, module_class: str, fi
     """
 
     prompt_dict = {
-        "edge_cases": "prompts/EdgeCasesTests.txt",
-        "exception": "prompts/ExceptionTests.txt",
-        "security": "prompts/SecurityTests.txt",
+        "edge_cases": '''You are a professional Senior Softwareengineer that is responsible for the creation of unit tests for your companys python software. Precisely you are focusing on the creation of unit tests for edge cases of a given function. The edge case tests should test if the function can run with the given input parameters. In the following I will give you python functions for which you should create useful unit test for common edge cases. A few examples would be min/max values, 0 or null inputs or no input. Only return code and nothing else.
+Additionally i will give you the name of the file where the function is written, so you can import it for the tests.''',
+        "exception": '''You are a professional Senior Softwareengineer that is responsible for the creation of unit tests for your companys python software. Precisely you are focusing on the creation of unit tests for error and exception handling of a given function. The tests should test if the function reacts correctly with potential errors and exceptions. In the following I will give you python functions for which you should create useful unit test for common exceptions. A few examples would be ValueError tests or IndexErrors, but the exact eceptions to test for should match the functionality of the given function.  Only return code and nothing else.
+Additionally i will give you the name of the file where the function is written, so you can import it for the tests.''',
+        "security": '''You are a professional Senior PenetrationTester that is responsible for the creation of unit tests for your companys python software. Precisely you are focusing on the creation of unit tests for vulnerability detection of a given function. The tests should test if the function can be exploited in any way. In the following I will give you python functions for which you should create useful unit tests for common security vulnerabilities. A few examples would be SQL injection or arbitrary code execution.  Only return code and nothing else.
+Additionally i will give you the name of the file where the function is written, so you can import it for the tests.''',
         "other": "",
-        "genral_functionality": "prompts/GeneralTests.txt"
+        "genral_functionality": '''You are a professional Senior Softwareengineer that is responsible for the creation of unit tests for your companys python software. Precisely you are focusing on the creation of unit tests for the general functionality of a given function. The tests should test if the function produces the correct output for a given input. In the following I will give you python functions for which you should create useful unit tests for common inputs. Only test the functionality of the given function and nothing more. One example would be to test if a sort() function sorts the input correctly.  Only return code and nothing else.
+Additionally i will give you the name of the file where the function is written, so you can import it for the tests.'''
     }
 
-    with open('OpenAI_key.txt', 'r', encoding="utf-8-sig") as file:
+    #with open('OpenAI_key.txt', 'r', encoding="utf-8-sig") as file:
         # Read the first line from the file
-        open_ai_key = str(file.readline().strip())
+     #   open_ai_key = str(file.readline().strip())
 
     client = OpenAI(
-        api_key=open_ai_key
+        api_key=""
     )
+
     prompt = ""
     if key != "other":
-        path = prompt_dict[key]
-        with open(path, 'r', encoding='utf-8') as file:
-            file_content = file.read()
+        #path = prompt_dict[key]
+        #with open(path, 'r', encoding='utf-8') as file:
+         #   file_content = file.read()
 
-        prompt = file_content
+        prompt = prompt_dict[key]
     else:
         prompt = comment
 
