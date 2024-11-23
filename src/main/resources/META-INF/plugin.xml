@@ -1,0 +1,23 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>org.jetbrains.plugins.template</id>
+    <name>TestBrains</name>
+    <vendor>TestBrains</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>Pythonid</depends>
+
+    <resource-bundle>messages.MyBundle</resource-bundle>
+
+    <actions>
+        <action class="org.jetbrains.plugins.template.CheckBoxAction"
+                id="checkboxID"
+                text="Generate Unit Tests"
+                description="Automatically creates unittest for the selected method using gpt 4.0"
+                icon="AllIcons.Actions.EnableNewUi"
+        >
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </action>
+
+    </actions>
+</idea-plugin>
