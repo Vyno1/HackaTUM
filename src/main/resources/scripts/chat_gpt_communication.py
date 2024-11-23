@@ -1,18 +1,19 @@
 ﻿import json
 from operator import index
+import os
 
 from openai import OpenAI
 from write_code_to_file import write_code_to_file
 
 
-def communicate(key: str, file_path_py: str, comment: str, module: str, file_path_code: str) -> None:
+def communicate(key: str, file_path_py: str, comment: str, module_class: str, file_path_code: str) -> None:
     """
     Args:
         key (str): The prompt or keyword to use (e.g., security).
         file_path_py (str): The path to the file.
         file_path_code (str): Path to the copied code in a file.
         comment (str, optional): An additional comment, if any. Ignored if empty.
-        module (str): The module that needs to be specified to ChatGPT.
+        module_class (str): The module that needs to be specified to ChatGPT.
     """
 
     prompt_dict = {
@@ -53,7 +54,8 @@ def communicate(key: str, file_path_py: str, comment: str, module: str, file_pat
     with open(file_path_code, 'r', encoding='utf-8') as file:
         function = file.read()
 
-    content = f"{function}\n{module}"
+    module = os.path.basename(file_path_py).split(".")[0]
+    content = f"{function}\n{module}\n{module_class}"
 
     message = client.beta.threads.messages.create(
         thread_id=thread.id,
@@ -72,7 +74,7 @@ def communicate(key: str, file_path_py: str, comment: str, module: str, file_pat
             thread_id=thread.id
         )
         output = json.loads(messages.model_dump_json())["data"][0]["content"][0]["text"]["value"]
-        write_code_to_file(file_path_py, clean_output(output))
+        write_code_to_file(file_path_py, clean_output(output), key)
     else:
         print(run.status)
 

@@ -13,7 +13,7 @@ def parse_args():
                         help="Flag set if general functionality tests desired")
     parser.add_argument("--other", action="store_true", help="Flag set if other tests desired")
     parser.add_argument("--comment", default="", help="Optional comment if user wants other tests")
-    parser.add_argument("--class", help="What class/module we are in")
+    parser.add_argument("--module", help="What class/module we are in")
 
     args = parser.parse_args()
 
@@ -36,9 +36,9 @@ def parse_args():
 def main():
     file_path, function_path, params, module, comment = parse_args()
 
-    for key, value in params:
+    for key, value in params.items():
         if value:
-            comm.communicate(key, file_path, function_path, comment, module)
+            comm.communicate(key, file_path, comment, module, function_path)
 
 
 if __name__ == "__main__":
