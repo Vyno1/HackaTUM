@@ -2,7 +2,6 @@ package org.jetbrains.plugins.template
 
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.JBColor
-import java.awt.Color
 import java.awt.Dimension
 import javax.swing.*
 import javax.swing.border.LineBorder
@@ -64,5 +63,5 @@ class MultiCheckboxDialog : DialogWrapper(true) {
     fun getSelectedOptions() =
         checkboxes.filter { it.value.isSelected && (it.key != Options.ADDITIONAL_PROMPTS) }.keys.toList()
 
-    fun getAdditionalOptions() = additionalOptionsJTextArea.text
+    fun getAdditionalOptions(): String = additionalOptionsJTextArea.text
 }

@@ -5,6 +5,7 @@
     <vendor>TestBrains</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>Pythonid</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 

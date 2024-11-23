@@ -3,21 +3,20 @@ package org.jetbrains.plugins.template
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.editor.SelectionModel
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.psi.*
+import com.intellij.psi.util.PsiTreeUtil
+import com.jetbrains.python.psi.*
+import com.jetbrains.python.pyi.PyiFile
 
 class CheckBoxAction : AnAction() {
 
     override fun actionPerformed(event: AnActionEvent) {
         val selectedText = getText(event)
         if (selectedText.isNullOrEmpty()) {
-            // Show a message popup if no text is selected
-            Messages.showMessageDialog(
-                "No text selected!",
-                "Selection Error",
-                Messages.getWarningIcon()
-            )
+            Messages.showMessageDialog("No function selected", "Error", Messages.getErrorIcon())
             return
         }
 
@@ -33,9 +32,9 @@ class CheckBoxAction : AnAction() {
         if (additionalPrompt.isNotEmpty()) {
             selectedOptionsStringArr.plus("--${Options.ADDITIONAL_PROMPTS.name} \"${additionalPrompt}\"")
         }
-        // TODO: Add helper function that infers source file path, class and function
-        // Then, add to Args string list
-        // If file is module (has no class), don't add --class
+
+        getImportData(event)
+
         val scriptPath = MyBundle.message("script.filepath")
         val retStr = PythonHandler.call(scriptPath, selectedOptionsStringArr)
         val (message, icon) =
@@ -50,21 +49,53 @@ class CheckBoxAction : AnAction() {
     }
 
 
-    private fun getText(event: AnActionEvent): String? {
-        val editor: Editor? = event.getData(com.intellij.openapi.actionSystem.CommonDataKeys.EDITOR)
-        val project: Project? = event.getData(com.intellij.openapi.actionSystem.CommonDataKeys.PROJECT)
+    private fun getImportData(event: AnActionEvent) {
+        val results = mutableMapOf<String, String>()
 
-        // Check if editor and selection exist
-        if (editor != null && project != null) {
-            // Get the selection model from the editor
-            val selectionModel: SelectionModel = editor.selectionModel
+        val psiFile: PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return
+        val editor: Editor = event.getData(CommonDataKeys.EDITOR) ?: return
 
-            // If there is any selected text, get it
-            if (selectionModel.hasSelection()) {
-                val selectedText = selectionModel.selectedText
-                return selectedText
+        //TODO fix this. Want cursor location
+        val elementAtCaret: PsiElement = event.getData(CommonDataKeys.PSI_ELEMENT) ?: return
+
+        // val caretPos = editor.selectionModel.selectionStart
+        // val elementAtCaret: PsiElement = psiFile.findElementAt(caretPos) ?: return
+
+
+        results["path"] = psiFile.virtualFile.path
+
+        if (psiFile is PyFile) {
+            val containingFunction = PsiTreeUtil.getParentOfType(elementAtCaret, PyFunction::class.java)
+            if (containingFunction != null) {
+                println("============")
+                print(containingFunction)
+                println("============")
+                results["function"] = containingFunction.name ?: "UnnamedFunction"
+
+                // Find the class containing the function (if any)
+                val containingClass = PsiTreeUtil.getParentOfType(containingFunction, PyClass::class.java)
+                if (containingClass != null) {
+                    results["class"] = containingClass.qualifiedName ?: containingClass.name ?: "UnnamedClass"
+                }
+            } else {
+                // If no function found, fallback to module-level
+                results["function"] = "ModuleLevel"
+                results["class"] = psiFile.name
             }
+
+            print(results)
+            println()
+        } else {
+            println("Not a Python file.")
         }
-        return ""
+    }
+
+
+    private fun getText(event: AnActionEvent): String? {
+        val elementAtCaret: PsiElement = event.getData(CommonDataKeys.PSI_ELEMENT) ?: return ""
+        println(elementAtCaret.text)
+        return elementAtCaret.text
     }
 }
+
+

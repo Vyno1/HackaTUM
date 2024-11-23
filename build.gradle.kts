@@ -47,6 +47,8 @@ dependencies {
         pluginVerifier()
         zipSigner()
         testFramework(TestFrameworkType.Platform)
+
+        bundledPlugin("Pythonid")
     }
 }
 
