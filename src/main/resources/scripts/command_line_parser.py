@@ -38,7 +38,7 @@ def main():
 
     for key, value in params:
         if value:
-            comm.communicate(key, file_path, function, comment)
+            comm.communicate(key, file_path, function, comment, module)
 
 
 if __name__ == "__main__":
