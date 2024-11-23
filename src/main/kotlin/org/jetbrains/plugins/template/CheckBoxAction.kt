@@ -28,24 +28,25 @@ class CheckBoxAction : AnAction() {
         }
 
         val selectedOptions = dialog.getSelectedOptions()
-        val selectedOptionsStringArr = selectedOptions.map { "--${it.name}" }
+        val selectedOptionsStringArr: MutableList<String> = selectedOptions.map { "--${it.name}" }.toMutableList()
 
         val additionalPrompt = dialog.getAdditionalOptions()
         if (additionalPrompt.isNotEmpty()) {
-            selectedOptionsStringArr.plus("--${Options.ADDITIONAL_PROMPTS.name} \"${additionalPrompt}\"")
+            selectedOptionsStringArr.add("--${Options.ADDITIONAL_PROMPTS.name} \"${additionalPrompt}\"")
         }
 
-        val functionFilePath = result["function"]
+        val functionFilePath = result["function_path"]
         if (functionFilePath == null || !File(functionFilePath).exists()) {
             displayError("Absolute path to function file not resolvable.")
             return
         }
 
         for ((key, value) in result) {
-            selectedOptionsStringArr.plus("--${key} \"${value}\"")
+            selectedOptionsStringArr.add("--${key} \"${value}\"")
         }
 
-        val pyfilepath = "/Users/maxi/code/repos/TestBrains/src/main/resources/python/generate_tests.py"
+        val pyfilepath =
+            "/Users/murasaki/Documents/JetbrainsProjects/HackaTUM/src/main/resources/scripts/command_line_parser.py"
         val retStr = PythonHandler.call(pyfilepath, selectedOptionsStringArr)
         val (message, icon) =
             if (retStr.isEmpty()) "Success!" to Messages.getInformationIcon()
@@ -69,7 +70,7 @@ class CheckBoxAction : AnAction() {
         val containingFunction: PyFunction =
             PsiTreeUtil.getParentOfType(elementAtCaret, PyFunction::class.java) ?: return mutableMapOf()
 
-        results["function"] = createFunctionFile(containingFunction.text)
+        results["function_path"] = createFunctionFile(containingFunction.text)
 
         // Find the class containing the function (if any)
         val containingClass: PyClass? = PsiTreeUtil.getParentOfType(containingFunction, PyClass::class.java)
