@@ -1,15 +1,17 @@
 package org.jetbrains.plugins.template
 
 import com.intellij.openapi.ui.DialogWrapper
+import com.intellij.ui.JBColor
+import java.awt.Color
 import java.awt.Dimension
 import javax.swing.*
-
+import javax.swing.border.LineBorder
 
 class MultiCheckboxDialog : DialogWrapper(true) {
 
     private val checkboxes = mutableMapOf<Options, JCheckBox>()
     private lateinit var panel: JPanel
-    private lateinit var additionalOptionsJTextField: JTextField
+    private lateinit var additionalOptionsJTextArea: JTextArea
 
     init {
         title = "Testing Categories"
@@ -34,16 +36,20 @@ class MultiCheckboxDialog : DialogWrapper(true) {
     }
 
     private fun addAdditionalPromptsTextField() {
-        additionalOptionsJTextField.isVisible = false
+        additionalOptionsJTextArea = JTextArea()
+        additionalOptionsJTextArea.isVisible = false
+        additionalOptionsJTextArea.lineWrap = true
+        additionalOptionsJTextArea.wrapStyleWord = true
+        additionalOptionsJTextArea.border = LineBorder(JBColor.GRAY, 1)
+        additionalOptionsJTextArea.alignmentX = JPanel.LEFT_ALIGNMENT
+        additionalOptionsJTextArea.preferredSize =
+            Dimension(panel.width, additionalOptionsJTextArea.preferredSize.height)
 
         val additionalPromptsCheckbox = checkboxes[Options.ADDITIONAL_PROMPTS] ?: return
-        additionalOptionsJTextField.alignmentX = JPanel.LEFT_ALIGNMENT
-        additionalOptionsJTextField.preferredSize =
-            Dimension(panel.width, additionalOptionsJTextField.preferredSize.height)
 
         additionalPromptsCheckbox.addChangeListener {
             val isSelected = additionalPromptsCheckbox.isSelected
-            additionalOptionsJTextField.isVisible = isSelected
+            additionalOptionsJTextArea.isVisible = isSelected
 
             SwingUtilities.invokeLater {
                 panel.revalidate()
@@ -51,11 +57,12 @@ class MultiCheckboxDialog : DialogWrapper(true) {
             }
         }
 
-        panel.add(additionalOptionsJTextField)
+        panel.add(additionalOptionsJTextArea)
     }
 
 
-    fun getSelectedOptions() = checkboxes.filter { it.value.isSelected }.keys.toList()
+    fun getSelectedOptions() =
+        checkboxes.filter { it.value.isSelected && (it.key != Options.ADDITIONAL_PROMPTS) }.keys.toList()
 
-    fun getAdditionalOptions() = additionalOptionsJTextField.text
+    fun getAdditionalOptions() = additionalOptionsJTextArea.text
 }
