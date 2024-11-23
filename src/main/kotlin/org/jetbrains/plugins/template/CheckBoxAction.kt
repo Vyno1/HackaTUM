@@ -3,6 +3,7 @@ package org.jetbrains.plugins.template
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.SelectionModel
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -33,10 +34,12 @@ class CheckBoxAction : AnAction() {
             selectedOptionsStringArr.plus("--${Options.ADDITIONAL_PROMPTS.name} \"${additionalPrompt}\"")
         }
 
-        getImportData(event)
+        // TODO: Add helper function that infers source file path, class and function
+        // Then, add to Args string list
+        // If file is module (has no class), don't add --class
 
-        val scriptPath = MyBundle.message("script.filepath")
-        val retStr = PythonHandler.call(scriptPath, selectedOptionsStringArr)
+        val pyfilepath = "/Users/maxi/code/repos/TestBrains/src/main/resources/python/generate_tests.py"
+        val retStr = PythonHandler.call(pyfilepath, selectedOptionsStringArr)
         val (message, icon) =
             if (retStr.isEmpty()) "Success!" to Messages.getInformationIcon()
             else "Error: $retStr" to Messages.getErrorIcon()
@@ -96,6 +99,7 @@ class CheckBoxAction : AnAction() {
         println(elementAtCaret.text)
         return elementAtCaret.text
     }
+
 }
 
 
