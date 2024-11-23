@@ -9,13 +9,6 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <actions>
-        <action class="org.jetbrains.plugins.template.HelloWorld"
-                id="tempID"
-                text="My Custom Action"
-                description="Best description ever"
-        >
-            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-        </action>
         <action class="org.jetbrains.plugins.template.CheckBoxAction"
                 id="checkboxID"
                 text="CheckBoxMenu"
@@ -23,5 +16,6 @@
         >
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
+
     </actions>
 </idea-plugin>
