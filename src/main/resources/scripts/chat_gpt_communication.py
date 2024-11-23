@@ -23,17 +23,14 @@ Additionally i will give you the name of the file where the function is written,
 Additionally i will give you the name of the file where the function is written, so you can import it for the tests.''',
         "security": '''You are a professional Senior PenetrationTester that is responsible for the creation of unit tests for your companys python software. Precisely you are focusing on the creation of unit tests for vulnerability detection of a given function. The tests should test if the function can be exploited in any way. In the following I will give you python functions for which you should create useful unit tests for common security vulnerabilities. A few examples would be SQL injection or arbitrary code execution.  Only return code and nothing else.
 Additionally i will give you the name of the file where the function is written, so you can import it for the tests.''',
-        "other": "",
+        "other": "You are a helpful assistant that generates unit tests based on the following given input. Only return code and nothing else.",
         "functionality": '''You are a professional Senior Softwareengineer that is responsible for the creation of unit tests for your companys python software. Precisely you are focusing on the creation of unit tests for the general functionality of a given function. The tests should test if the function produces the correct output for a given input. In the following I will give you python functions for which you should create useful unit tests for common inputs. Only test the functionality of the given function and nothing more. One example would be to test if a sort() function sorts the input correctly.  Only return code and nothing else.
 Additionally i will give you the name of the file where the function is written, so you can import it for the tests.'''
     }
 
-    #with open('OpenAI_key.txt', 'r', encoding="utf-8-sig") as file:
-        # Read the first line from the file
-     #   open_ai_key = str(file.readline().strip())
 
     client = OpenAI(
-        api_key=""
+        api_key=os.environ.get("OPENAI_API_KEY")
     )
 
     prompt = ""
