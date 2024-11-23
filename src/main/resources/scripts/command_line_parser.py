@@ -20,7 +20,7 @@ def parse_args():
     params = {}
 
     file_path = args.file_path
-    function = args.function_path
+    function_path = args.function_path
     comment = args.comment
     module = args.module
 
