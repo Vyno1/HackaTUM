@@ -16,5 +16,12 @@
         >
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
+        <action class="org.jetbrains.plugins.template.CheckBoxAction"
+                id="checkboxID"
+                text="CheckBoxMenu"
+                description="Best description ever"
+        >
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </action>
     </actions>
 </idea-plugin>
