@@ -5,5 +5,5 @@ enum class Options(val displayName: String) {
     FUNCTIONALITY("Correct functionality"),
     EDGE_CASES("Edge cases"),
     EXCEPTION("Error & exception handling"),
-    ADDITIONAL_PROMPTS("Additional specifications / Custom");
+    ADDITIONAL_PROMPTS("Custom Prompt");
 }
